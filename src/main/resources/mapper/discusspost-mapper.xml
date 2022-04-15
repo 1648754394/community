@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowcoder.community.dao.DiscussPostMapper">   <!--记得更改全类名-->
+    <sql id="selectFields">
+        id, user_id, title, content, type, status, create_time, comment_count, score
+    </sql>
+
+    <select id="selectDiscussPosts" resultType="DiscussPost">    <!--返回List类型，但是List中存的自定义类型-->
+        select <include refid="selectFields"/>
+        from discuss_post
+        where status != 2
+        <if test="userId!=0">    <!--判断是否传入了userId, #{传入形参}-->
+            and user_id = #{userId}
+        </if>
+        order by type desc, create_time desc <!--将贴子按类型和创建时间降序排序-->
+        limit #{offset}, #{limit}   <!--页数限制-->
+    </select>
+
+    <select id="selectDiscussPostRows" resultType="int">    <!--返回int类型-->
+        select count(id)
+        from discuss_post
+        where status != 2
+        <if test="userId!=0">    <!--判断是否传入了userId, #{传入形参}-->
+            and user_id = #{userId}
+        </if>
+    </select>
+</mapper>
