@@ -61,4 +61,8 @@ class CommunityApplicationTests implements ApplicationContextAware {
 	public void testDI() {
 		System.out.println(alphaDao);
 	}
+
+
+
+
 }

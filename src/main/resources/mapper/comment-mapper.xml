@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowcoder.community.dao.CommentMapper">   <!--记得更改全类名-->
+    <sql id="selectFields">
+        id, user_id, entity_type, entity_id, target_id, content, status, create_time
+    </sql>
+
+    <sql id="insertFields">
+        user_id, entity_type, entity_id, target_id, content, status, create_time
+    </sql>
+
+    <select id="selectCommentByEntity" resultType="Comment">
+        select <include refid="selectFields"/> from comment
+        where status = 0
+        and entity_type = #{entityType}
+        and entity_id = #{entityId}
+        order by create_time asc <!--将贴子按类型和创建时间降序排序-->
+        limit #{offset}, #{limit}   <!--页数限制-->
+    </select>
+
+    <select id="selectCountByEntity" resultType="int">
+        select count(id) from comment
+        where status = 0
+        and entity_type = #{entityType}
+        and entity_id = #{entityId}
+    </select>
+
+    <insert id="insertComment" parameterType="Comment" keyProperty="id">
+        insert into comment (<include refid="insertFields"/>)
+        values(#{userId}, #{entityType}, #{entityId}, #{targetId}, #{content}, #{status}, #{createTime})
+    </insert>
+
+</mapper>
