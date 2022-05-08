@@ -182,4 +182,10 @@ public class MapperTests {
 
 
     }
+
+    @Test
+    public void testSelectNoticeUnReadCount() {
+        int comment = messageMapper.selectNoticeUnReadCount(149, "comment");
+        System.out.println(comment);
+    }
 }
